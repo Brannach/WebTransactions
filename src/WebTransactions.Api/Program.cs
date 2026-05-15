@@ -18,9 +18,14 @@ public class Program
         //Enables razor interactive (dynamic) components - they are going to render the HTML pages
         builder.Services.AddRazorComponents().AddInteractiveServerComponents();
         
+        // Use connection string from appsettings.json, falling back to a default
+        // if the file is not present (e.g. when running the self-contained executable)
+        string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+                                  ?? "Data Source=webtransactions.db";
+
         //Adds EF core using Sqlite as database service
         builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlite(connectionString));
         
         // Registers exchange rate service (which calls external exchange API) with an HttpClient
         builder.Services.AddHttpClient<IExchangeRateService, ExchangeRateService>();
@@ -42,6 +47,15 @@ public class Program
         {
             AppDbContext db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             db.Database.EnsureCreated();
+            try
+            {
+                db.Database.ExecuteSqlRaw("SELECT 1 FROM Transactions LIMIT 1");
+            }
+            catch
+            {
+                db.Database.EnsureDeleted();
+                db.Database.EnsureCreated();
+            }
         }
 
         app.UseHttpsRedirection();
