@@ -2,6 +2,35 @@
 
 A purchase transaction management REST API built as a coding challenge for a C# position.
 
+## Quick Start
+
+### Option 1 — Pre-built executable (recommended, no .NET required)
+
+1. Go to the [latest release](https://github.com/Brannach/WebTransactions/releases/latest)
+2. Download `WebTransactions.Api.exe`
+3. Place it in the root of the repository (alongside `run.bat`)
+4. Double-click `run.bat`
+
+### Option 2 — Run from source
+
+Double-click `run.bat` — it will install .NET 9 automatically if not present and launch the application.
+
+Or manually:
+
+```bash
+dotnet run --project src/WebTransactions.Api
+```
+
+The application will be available at **http://localhost:5107**
+
+### Running the Tests
+
+```bash
+dotnet test
+```
+
+---
+
 ## Tech Stack
 
 ### Language & Runtime — C# / .NET 9
@@ -183,9 +212,26 @@ If the application were to be deployed in a multi-instance setup (more than one 
 
 ## Running the Application
 
+### Option 1 — Pre-built executable (recommended, no .NET required)
+
+1. Go to the [latest release](https://github.com/Brannach/WebTransactions/releases/latest)
+2. Download `WebTransactions.Api.exe`
+3. Place it in the root of the repository (alongside `run.bat`)
+4. Double-click `run.bat` or run `run.ps1` directly
+
+The application will start at `http://localhost:5107`.
+
+### Option 2 — Run from source (requires .NET 9 SDK)
+
+If you prefer to run from source, double-click `run.bat`. It will automatically install .NET 9 if not present and launch the application.
+
+Alternatively, run manually:
+
 ```bash
 dotnet run --project src/WebTransactions.Api
 ```
+
+The application will start at `http://localhost:5107`.
 
 ## Running the Tests
 

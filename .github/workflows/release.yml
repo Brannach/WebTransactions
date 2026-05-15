@@ -22,7 +22,7 @@ jobs:
           dotnet-version: 9.0.x
 
       - name: Publish self-contained executable
-        run: dotnet publish src/WebTransactions.Api/WebTransactions.Api.csproj -c Release --self-contained true -r win-x64 -p:PublishSingleFile=true -o ./publish
+        run: dotnet publish src/WebTransactions.Api/WebTransactions.Api.csproj -c Release --self-contained true -r win-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o ./publish
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
