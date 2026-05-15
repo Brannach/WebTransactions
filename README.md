@@ -2,6 +2,25 @@
 
 A purchase transaction management REST API built as a coding challenge for a C# position.
 
+## Features
+
+| Feature | Description |
+|---|---|
+| **REST API** | Versioned ASP.NET Core Web API (`/api/v1`) with MVC controllers for storing and retrieving transactions |
+| **Currency Conversion** | Real-time conversion via the US Treasury Rates of Exchange API using the most recent rate within 6 months |
+| **Blazor Server UI** | Interactive web interface for creating, listing, and retrieving transactions with currency conversion |
+| **Embedded SQLite** | File-based database via EF Core requiring no external server, applied automatically on startup |
+| **API Versioning** | URL-based versioning (`v1`) using `Asp.Versioning.Mvc`, with version headers reported on every response |
+| **Cancellation Tokens** | All async operations support cancellation, freeing server resources when clients disconnect |
+| **xUnit Functional Tests** | 11 end-to-end API tests using `WebApplicationFactory` covering happy paths, validation, and edge cases |
+| **Playwright UI Tests** | 4 browser-driven tests verifying full user flows using a real Chromium instance |
+| **GitHub Actions CI** | Automated build, test, and reporting pipeline running on every push and pull request |
+| **CodeQL Security Scanning** | Static security analysis integrated into CI with results published to the GitHub Security tab |
+| **Automated Releases** | Git tag push triggers a CI workflow that builds and publishes a self-contained Windows executable |
+| **Single-File Executable** | Self-contained `.exe` with embedded static files — runs with no .NET installation required |
+| **XML Documentation** | All public interfaces, controllers, and DTOs documented with XML doc comments |
+| **Copy to Clipboard** | Reusable Blazor component for copying transaction IDs, with visual success/failure feedback |
+
 ## Quick Start
 
 ### Option 1 — Pre-built executable (recommended, no .NET required)
