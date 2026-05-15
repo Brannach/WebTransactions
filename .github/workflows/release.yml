@@ -1,0 +1,28 @@
+﻿name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Publish self-contained executable
+        run: dotnet publish src/WebTransactions.Api/WebTransactions.Api.csproj -c Release --self-contained true -r win-x64 -p:PublishSingleFile=true -o ./publish
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./publish/WebTransactions.Api.exe
+          generate_release_notes: true
