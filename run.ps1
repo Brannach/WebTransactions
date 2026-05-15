@@ -55,7 +55,8 @@ if (Test-Path $executablePath) {
 
 # No executable found — inform the user and fall back to dotnet run
 Write-Host "Pre-built executable not found." -ForegroundColor Yellow
-Write-Host "You can download it from: $releaseUrl" -ForegroundColor Yellow
+Write-Host "You can download WebTransactions.zip from: $releaseUrl" -ForegroundColor Yellow
+Write-Host "Extract it and run WebTransactions.Api.exe directly." -ForegroundColor Yellow
 Write-Host "Falling back to dotnet run..." -ForegroundColor Yellow
 Write-Host ""
 

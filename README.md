@@ -215,9 +215,9 @@ If the application were to be deployed in a multi-instance setup (more than one 
 ### Option 1 — Pre-built executable (recommended, no .NET required)
 
 1. Go to the [latest release](https://github.com/Brannach/WebTransactions/releases/latest)
-2. Download `WebTransactions.Api.exe`
-3. Place it in the root of the repository (alongside `run.bat`)
-4. Double-click `run.bat` or run `run.ps1` directly
+2. Download `WebTransactions.zip`
+3. Extract it to any folder
+4. Run `WebTransactions.Api.exe` directly
 
 The application will start at `http://localhost:5107`.
 
