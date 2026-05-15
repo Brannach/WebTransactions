@@ -1,7 +1,10 @@
-﻿# WebTransactions - Application Launcher
-# Ensures .NET 9 SDK is installed and starts the application
+# WebTransactions - Application Launcher
+# Runs the pre-built self-contained executable if available.
+# Falls back to dotnet run, installing .NET 9 SDK if necessary.
 
 $requiredMajorVersion = 9
+$executablePath = "$PSScriptRoot\WebTransactions.Api.exe"
+$releaseUrl = "https://github.com/Brannach/WebTransactions/releases/latest"
 
 function Test-DotnetVersion {
     try {
@@ -32,12 +35,29 @@ function Install-DotnetWithScript {
     if (-not ($env:PATH -like "*$dotnetPath*")) {
         $env:PATH = "$dotnetPath;$env:PATH"
     }
-
 }
 
 # --- Main ---
 
 Write-Host "WebTransactions - Starting up..." -ForegroundColor Cyan
+
+# If the self-contained executable exists, run it directly — no .NET required
+if (Test-Path $executablePath) {
+    Write-Host "Pre-built executable found. Starting without .NET installation..." -ForegroundColor Green
+    Write-Host ""
+    Write-Host "Starting WebTransactions..." -ForegroundColor Cyan
+    Write-Host "The application will be available at: http://localhost:5107" -ForegroundColor Green
+    Write-Host "Press Ctrl+C to stop the application." -ForegroundColor Gray
+    Write-Host ""
+    & $executablePath
+    exit
+}
+
+# No executable found — inform the user and fall back to dotnet run
+Write-Host "Pre-built executable not found." -ForegroundColor Yellow
+Write-Host "You can download it from: $releaseUrl" -ForegroundColor Yellow
+Write-Host "Falling back to dotnet run..." -ForegroundColor Yellow
+Write-Host ""
 
 [int]$installedVersion = Test-DotnetVersion
 

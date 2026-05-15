@@ -17,3 +17,9 @@ obj/
 
 # Environment
 appsettings.Local.json
+
+# Self-contained executable (distributed via GitHub Releases)
+WebTransactions.Api.exe
+
+# Publish output
+publish/
