@@ -27,12 +27,13 @@ A purchase transaction management REST API built as a coding challenge for a C# 
 
 1. Go to the [latest release](https://github.com/Brannach/WebTransactions/releases/latest)
 2. Download `WebTransactions.Api.exe`
-3. Place it in the root of the repository (alongside `run.bat`)
-4. Double-click `run.bat`
+3. Run it directly — no installation needed
 
-### Option 2 — Run from source
+The application will be available at **http://localhost:5000**
 
-Double-click `run.bat` — it will install .NET 9 automatically if not present and launch the application.
+### Option 2 — Run from source (requires .NET 9 SDK)
+
+Clone the repository and double-click `run.bat` — it will install .NET 9 automatically if not present and launch the application.
 
 Or manually:
 
@@ -237,7 +238,7 @@ If the application were to be deployed in a multi-instance setup (more than one 
 2. Download `WebTransactions.Api.exe`
 3. Run it directly — no installation needed
 
-The application will start at `http://localhost:5107`.
+The application will start at **http://localhost:5000**
 
 ### Option 2 — Run from source (requires .NET 9 SDK)
 
@@ -249,7 +250,7 @@ Alternatively, run manually:
 dotnet run --project src/WebTransactions.Api
 ```
 
-The application will start at `http://localhost:5107`.
+The application will start at **http://localhost:5107**
 
 ## Running the Tests
 
