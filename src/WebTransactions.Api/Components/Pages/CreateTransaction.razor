@@ -1,0 +1,76 @@
+﻿@page "/create"
+@rendermode InteractiveServer
+@using WebTransactions.Api.Components.Shared
+@using WebTransactions.Api.DTO
+@using WebTransactions.Api.Services
+@inject ITransactionService TransactionService
+
+<h2>Add New Transaction</h2>
+
+<div class="form-card">
+    <EditForm Model="request" OnValidSubmit="HandleSubmit">
+        <DataAnnotationsValidator/>
+
+        <div class="form-group">
+            <label>Description</label>
+            <InputText @bind-Value="request.Description" placeholder="Enter transaction description"/>
+            <ValidationMessage For="@(() => request.Description)" />
+        </div>
+
+        <div class="form-group">
+            <label>Date</label>
+            <InputDate @bind-Value="request.TransactionDate"/>
+            <ValidationMessage For="@(() => request.TransactionDate)" />
+        </div>
+
+        <div class="form-group">
+            <label>Amount (USD)</label>
+            <InputNumber @bind-Value="request.Amount" placeholder="0.00"/>
+            <ValidationMessage For="@(() => request.Amount)" />
+        </div>
+
+        <button type="submit" class="btn-primary">Add Transaction</button>
+    </EditForm>
+
+    @if (createdId.HasValue)
+    {
+        <p class="text-success">Transaction created successfully! </p>
+        <span class="text-success hidden-box-container">
+            ID: @createdId
+            <span class="hidden-box" >
+                <CopyToClipboard Text=@createdId!.Value.ToString() Tooltip="Copy to clipboard"></CopyToClipboard>
+            </span>
+        </span>
+        
+    }
+
+    @if (errorMessage is not null)
+    {
+        <p class="text-error">@errorMessage</p>
+    }
+</div>
+
+@code {
+
+    private CreateTransactionRequest request = new CreateTransactionRequest
+    {
+        TransactionDate = DateOnly.FromDateTime(DateTime.Today)
+    };
+
+    private Guid? createdId;
+    private string? errorMessage;
+
+    private async Task HandleSubmit()
+    {
+        try
+        {
+            createdId = await TransactionService.CreateTransactionAsync(request);
+            errorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+
+}

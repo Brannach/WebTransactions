@@ -1,0 +1,6 @@
+﻿@WebTransactions.Api_HostAddress = http://localhost:5107
+
+GET {{WebTransactions.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

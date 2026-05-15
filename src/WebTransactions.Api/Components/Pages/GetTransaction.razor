@@ -1,0 +1,106 @@
+﻿@page "/get"
+@rendermode InteractiveServer
+@using System.Globalization
+@using WebTransactions.Api.DTO
+@using WebTransactions.Api.Services
+@inject ITransactionService TransactionService
+@inject IExchangeRateService ExchangeRateService
+
+<h2>Retrieve Transaction</h2>
+
+<div class="form-card">
+    <div class="form-group">
+        <label>Transaction ID</label>
+        <input @bind="transactionId" placeholder="Enter transaction GUID"/>
+    </div>
+
+    <div class="form-group">
+        <label>Currency</label>
+        <select @bind="currency">
+            <option value="">Select a currency</option>
+            @foreach (string c in availableCurrencies)
+            {
+                <option value="@c">@c</option>
+            }
+        </select>
+    </div>
+
+    <button class="btn-primary" @onclick="HandleSearch">Retrieve</button>
+
+    @if (errorMessage is not null)
+    {
+        <p class="text-error">@errorMessage</p>
+    }
+</div>
+
+@if (response is not null)
+{
+    <div class="card" style="margin-top: 24px;">
+        <table>
+            <tbody>
+            <tr>
+                <th>ID</th>
+                <td>@response.Id</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>@response.Description</td>
+            </tr>
+            <tr>
+                <th>Transaction Date</th>
+                <td>@response.TransactionDate</td>
+            </tr>
+            <tr>
+                <th>Original Amount (USD)</th>
+                <td>$@response.OriginalAmountUsd.ToString("N2", CultureInfo.CurrentCulture)</td>
+            </tr>
+            <tr>
+                <th>Exchange Rate</th>
+                <td>@response.ExchangeRate.ToString("N2", CultureInfo.CurrentCulture)</td>
+            </tr>
+            <tr>
+                <th>Converted Amount</th>
+                <td>@response.ConvertedAmount.ToString("N2", CultureInfo.CurrentCulture)</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    private string transactionId = string.Empty;
+    private string currency = string.Empty;
+    private TransactionResponse? response;
+    private string? errorMessage;
+    private List<string> availableCurrencies = new List<string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        availableCurrencies = await ExchangeRateService.GetAvailableCurrenciesAsync();
+    }
+
+    private async Task HandleSearch()
+    {
+        response = null;
+        errorMessage = null;
+
+        if (!Guid.TryParse(transactionId, out Guid id))
+        {
+            errorMessage = "Invalid transaction ID format.";
+            return;
+        }
+
+        if (string.IsNullOrEmpty(currency))
+        {
+            errorMessage = "Please select a currency.";
+            return;
+        }
+
+        TransactionResponse? result = await TransactionService.GetTransactionAsync(id, currency);
+        if (result is null)
+            errorMessage = "Transaction not found or no exchange rate available within 6 months of the transaction date.";
+        else
+            response = result;
+    }
+
+}

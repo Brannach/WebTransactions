@@ -1,0 +1,35 @@
+﻿@using Microsoft.JSInterop
+@inject IJSRuntime JS
+
+<button title="@Tooltip" @onclick="CopyClipboard">@_icon</button>
+
+@code {
+    [Parameter]
+    public string? Text { get; set; }
+    [Parameter]
+    public string? Tooltip { get; set; }
+
+    private string _icon = "⧉";
+    private async Task CopyClipboard()
+    {
+        try
+        {
+        await JS.InvokeVoidAsync(
+            "navigator.clipboard.writeText", Text
+        );
+        _icon = "✓";
+        StateHasChanged();
+        await Task.Delay(1000);
+        _icon = "⧉";
+        StateHasChanged();
+        }
+        catch (Exception)
+        {
+            _icon = "✗";
+            StateHasChanged();
+            await Task.Delay(1000);
+            _icon = "⧉";
+            StateHasChanged();
+        }
+    }
+}

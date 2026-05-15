@@ -1,0 +1,64 @@
+﻿@page "/list"
+@rendermode InteractiveServer
+@using System.Globalization
+@using WebTransactions.Api.Components.Shared
+@using WebTransactions.Api.Models
+@using WebTransactions.Api.Services
+@inject ITransactionService TransactionService
+
+<span><h2>All Transactions (Total: @transactionCount)</h2></span>
+
+
+@if (transactions is null)
+{
+    <p>Loading...</p>
+}
+else if (transactions.Count == 0)
+{
+    <p>No transactions found.</p>
+}
+else
+{
+    <table>
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount (USD)</th>
+            <th>Id</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (Transaction transaction in transactions)
+        {
+            <tr>
+                <td>@transaction.TransactionDate</td>
+                <td>@transaction.Description</td>
+                <td>$@transaction.Amount.ToString("N2", CultureInfo.CurrentCulture)</td>
+                <td>
+                    @transaction.Id
+                    <span class="hidden-box">
+                        <CopyToClipboard Text="@transaction.Id.ToString()" Tooltip="Copy to clipboard" />
+                    </span>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Transaction>? transactions;
+    private int transactionCount = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadTransactions();
+    }
+
+    private async Task LoadTransactions()
+    {
+        transactions = await TransactionService.GetAllTransactionsAsync();
+        transactionCount = transactions?.Count ?? 0;
+    }
+}

@@ -1,0 +1,19 @@
+# Build output
+bin/
+obj/
+
+# SQLite database
+*.db
+*.db-shm
+*.db-wal
+
+# .NET
+*.user
+*.suo
+.vs/
+
+# Rider
+.idea/
+
+# Environment
+appsettings.Local.json

@@ -1,0 +1,26 @@
+﻿@inherits LayoutComponentBase
+
+<div class="app-container">
+    <header class="app-header">
+        <h1>Web Transactions</h1>
+    </header>
+    <div class="app-body">
+        <nav class="sidebar">
+            <NavLink href="/" class="nav-item" Match="NavLinkMatch.All">
+                <span class="nav-icon">⌂</span> Home
+            </NavLink>
+            <NavLink href="/list" class="nav-item">
+                <span class="nav-icon">≡</span> Transactions
+            </NavLink>
+            <NavLink href="/create" class="nav-item">
+                <span class="nav-icon">+</span> Add New
+            </NavLink>
+            <NavLink href="/get" class="nav-item">
+                <span class="nav-icon">↗</span> Retrieve
+            </NavLink>
+        </nav>
+        <main class="content">
+            @Body
+        </main>
+    </div>
+</div>

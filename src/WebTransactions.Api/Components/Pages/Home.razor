@@ -1,0 +1,15 @@
+﻿@page "/"
+@rendermode InteractiveServer
+<h2>Home</h2>
+
+<div class="card">
+    <p>Welcome to Web Transactions. Use the sidebar to manage your transactions.</p>
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("Home page initialized");
+        await Task.CompletedTask;
+    }
+}
