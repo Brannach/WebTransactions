@@ -1,4 +1,4 @@
-﻿name: CI
+name: CI
 
 on:
   push:
@@ -13,7 +13,8 @@ jobs:
     permissions:
       contents: read
       checks: write
-    
+      security-events: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,21 +29,32 @@ jobs:
 
       - name: Build
         run: dotnet build --no-restore --configuration Release
-        
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: csharp
+
+      - name: Build for CodeQL
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ hashFiles('**/WexPurchases.UI.Tests.csproj') }}
+          key: playwright-${{ hashFiles('**/WebTransactions.UI.Tests.csproj') }}
 
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: pwsh tests/WexPurchases.UI.Tests/bin/Release/net9.0/playwright.ps1 install --with-deps chromium
+        run: pwsh tests/WebTransactions.UI.Tests/bin/Release/net9.0/playwright.ps1 install --with-deps chromium
 
       - name: Install Playwright system dependencies
         if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: pwsh tests/WexPurchases.UI.Tests/bin/Release/net9.0/playwright.ps1 install-deps chromium    
+        run: pwsh tests/WebTransactions.UI.Tests/bin/Release/net9.0/playwright.ps1 install-deps chromium
 
       - name: Run tests
         run: dotnet test --no-build --configuration Release --logger "trx;LogFileName=test-results.trx" --results-directory ./test-results
@@ -51,6 +63,6 @@ jobs:
         uses: dorny/test-reporter@v1
         if: always()
         with:
-          name: API Tests
+          name: Tests
           path: ./test-results/*.trx
           reporter: dotnet-trx
