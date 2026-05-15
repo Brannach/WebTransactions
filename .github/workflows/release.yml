@@ -24,12 +24,8 @@ jobs:
       - name: Publish self-contained executable
         run: dotnet publish src/WebTransactions.Api/WebTransactions.Api.csproj -c Release --self-contained true -r win-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o ./publish
 
-      - name: Create release archive
-        shell: pwsh
-        run: Compress-Archive -Path "./publish/*" -DestinationPath "./WebTransactions.zip"
-
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ./WebTransactions.zip
+          files: ./publish/WebTransactions.Api.exe
           generate_release_notes: true

@@ -59,7 +59,13 @@ public class Program
         }
 
         app.UseHttpsRedirection();
-        app.UseStaticFiles();
+        
+        // Packages the style files with the app
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new Microsoft.Extensions.FileProviders.ManifestEmbeddedFileProvider(
+                typeof(Program).Assembly, "wwwroot")
+        });
         app.UseAntiforgery();
         app.MapControllers();
         
