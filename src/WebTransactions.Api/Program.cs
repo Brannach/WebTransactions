@@ -41,7 +41,7 @@ public class Program
         using (IServiceScope scope = app.Services.CreateScope())
         {
             AppDbContext db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            db.Database.Migrate();
+            db.Database.EnsureCreated();
         }
 
         app.UseHttpsRedirection();
